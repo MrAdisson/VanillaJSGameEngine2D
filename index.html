@@ -10,19 +10,43 @@
 </head>
 
 <style>
+    html {
+        height: 100%;
+    }
+
     body {
         background-color: black;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-y: hidden;
     }
 
     canvas {
-        border: 5px solid green;
-        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50;
+        transform: translate(-50%, -50%);
+
+    }
+
+    #switch {
+        /* MAKE IT PERFECTLY CENTERED IN SCREEN */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        width: 1820px;
     }
 </style>
 
-
 <body>
-    <canvas id="game">
+    <div>
+        <img src="./assets/web/switch.png" id="switch">
+        <canvas id="game">
+    </div>
 </body>
 
 
