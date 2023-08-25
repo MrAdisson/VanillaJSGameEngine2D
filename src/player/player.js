@@ -1,31 +1,45 @@
 import { Movement } from '../class/movement.js';
 import { GameManager } from '../gameManager.js';
-import { GRID } from '../statics.js';
 import { managePlayerAnimation } from './playerAnimation.js';
 
 export class Player {
   constructor() {
-    this.location = {
-      x: 15 * GRID.CELL_SIZE,
-      y: 5 * GRID.CELL_SIZE,
-    };
-    this.width = GRID.CELL_SIZE;
-    this.height = GRID.CELL_SIZE;
     this.color = 'purple';
-    this.movement = new Movement(this, 3, 'bottom');
     this.collides = true;
+    this.location = null;
+    this.width = 1;
+    this.height = 1;
+    this.movement = null;
+    this.coordinates = null;
   }
-  draw(ctx) {
-    const game = new GameManager();
+  draw(ctx, camera) {
+    const game = GameManager.getInstance();
     ctx.fillStyle = this.color;
     ctx.fillRect(
-      this.location.x,
-      this.location.y,
-      game.getMapManager().grid.CELL_SIZE,
-      game.getMapManager().grid.CELL_SIZE
+      this.location.x - camera.getOffset(ctx).x,
+      this.location.y - camera.getOffset(ctx).y,
+      this.width * game.getGrid().CELL_SIZE,
+      this.height * game.getGrid().CELL_SIZE
     );
   }
+
+  init() {
+    const game = GameManager.getInstance();
+    const grid = game.getGrid();
+    const map = game.getMap();
+    this.coordinates = {
+      x: map.playerStart.x,
+      y: map.playerStart.y,
+    };
+    this.location = {
+      x: map.playerStart.x * grid.CELL_SIZE,
+      y: map.playerStart.y * grid.CELL_SIZE,
+    };
+    this.movement = new Movement(this, 3, 'bottom');
+  }
   update(delta) {
+    const game = GameManager.getInstance();
+    // update coordinates:
     managePlayerAnimation(this);
     if (!this.movement.isMoving) return;
     this.move(delta);

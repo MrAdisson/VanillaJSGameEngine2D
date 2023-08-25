@@ -1,4 +1,3 @@
-import { GRID } from '../statics.js';
 import { ENTITIES } from '../entities/entities.js';
 import { GameManager } from '../gameManager.js';
 
@@ -9,11 +8,12 @@ export const interact = () => {
     return;
   }
   const map = game.getMap();
+  const grid = game.getGrid();
   const player = game.getPlayer();
   if (player.movement.isMoving) return;
   const targetCell = {
-    x: Math.floor(player.location.x / GRID.CELL_SIZE),
-    y: Math.floor(player.location.y / GRID.CELL_SIZE),
+    x: Math.floor(player.location.x / grid.CELL_SIZE),
+    y: Math.floor(player.location.y / grid.CELL_SIZE),
   };
   switch (player.movement.direction) {
     case 'top':

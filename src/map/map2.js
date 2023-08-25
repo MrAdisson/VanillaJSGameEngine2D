@@ -27,4 +27,10 @@ const mapStringLegend = {
   O: 'water',
 };
 
-export const map2 = mapStringToMap(PALLET_TOWN, mapStringLegend);
+const processedMap = mapStringToMap(PALLET_TOWN, mapStringLegend);
+
+export const map2 = {
+  ...processedMap,
+  name: 'map2',
+  playerStart: { x: 2, y: 2 },
+};

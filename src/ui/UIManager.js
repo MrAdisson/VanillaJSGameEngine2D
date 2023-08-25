@@ -16,7 +16,6 @@ export class UIManager {
   isDialogOpen() {
     return !!this.dialogBox;
   }
-
   update(delta) {}
 
   draw(ctx) {

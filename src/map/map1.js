@@ -28,4 +28,10 @@ const mapStringLegend = {
   X: 'ground',
 };
 
-export const map1 = mapStringToMap(PALLET_TOWN, mapStringLegend);
+const processedMap = mapStringToMap(PALLET_TOWN, mapStringLegend);
+
+export const map1 = {
+  ...processedMap,
+  name: 'map1',
+  playerStart: { x: 1, y: 1 },
+};

@@ -41,18 +41,19 @@ export class mapManager {
     return this.grid;
   }
 
-  drawMap(ctx) {
+  drawMap(ctx, camera) {
     for (const entitie in this.currentMap.objectsLocation) {
       this.currentMap.objectsLocation[entitie].forEach((location) => {
-        //IF ENTITY HAS AN ASSET, DRAW IT
         if (ENTITIES[entitie].asset) {
           const game = new GameManager();
           const assetManager = game.getAssetManager();
           const asset = assetManager.getAsset(entitie);
           ctx.drawImage(
             asset,
-            location.x * this.grid.CELL_SIZE,
-            location.y * this.grid.CELL_SIZE,
+            location.x * this.grid.CELL_SIZE -
+              camera.getOffset(ctx).x,
+            location.y * this.grid.CELL_SIZE -
+              camera.getOffset(ctx).y,
             ENTITIES[entitie].width * this.grid.CELL_SIZE,
             ENTITIES[entitie].height * this.grid.CELL_SIZE
           );
@@ -60,8 +61,8 @@ export class mapManager {
         }
         ctx.fillStyle = ENTITIES[entitie].color;
         ctx.fillRect(
-          location.x * this.grid.CELL_SIZE,
-          location.y * this.grid.CELL_SIZE,
+          location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
+          location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
           ENTITIES[entitie].width * this.grid.CELL_SIZE,
           ENTITIES[entitie].height * this.grid.CELL_SIZE
         );
@@ -75,9 +76,10 @@ export class mapManager {
 
   update(delta) {
     this.grid.update(delta);
+    this.updateMap(delta);
   }
-  draw(ctx) {
-    this.drawMap(ctx);
-    this.grid.draw(ctx);
+  draw(ctx, camera) {
+    this.drawMap(ctx, camera);
+    this.grid.draw(ctx, camera);
   }
 }

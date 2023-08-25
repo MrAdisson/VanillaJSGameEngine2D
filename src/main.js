@@ -1,6 +1,7 @@
 import { keyManager, manageInput } from './inputManager.js';
 import { GameManager } from './gameManager.js';
 import { preloadAssets } from './preload.js';
+import { logClickedCell } from './debug.js';
 
 //INITIALIZE CANVAS AND CONTEXT
 const canvas = document.getElementById('game');
@@ -19,19 +20,12 @@ document.addEventListener('keyup', (event) => {
 
 //ON CLICK ON A CELL, LOG CELL COORDINATES
 canvas.addEventListener('click', (event) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  const clickedCell = {
-    x: Math.floor(x / grid.CELL_SIZE),
-    y: Math.floor(y / grid.CELL_SIZE),
-  };
-  console.log(clickedCell);
+  logClickedCell(event, ctx);
 });
 
 // INITIALIZE GAME MANAGER, PLAYER, MAP MANAGER AND GRID
 const game = new GameManager();
-const grid = game.getGrid();
+game.init(canvas);
 
 preloadAssets();
 
