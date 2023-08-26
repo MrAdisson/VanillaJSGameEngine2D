@@ -12,4 +12,7 @@ export class AssetManager {
       return this.images[name];
     }
   }
+  getAssets() {
+    return this.images;
+  }
 }

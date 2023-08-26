@@ -10,7 +10,6 @@ export class Camera {
       x: 0,
       y: 0,
     };
-    this.zoom = 10;
   }
 
   getOffset(ctx) {

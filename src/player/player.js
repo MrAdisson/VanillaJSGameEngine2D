@@ -1,6 +1,7 @@
 import { Movement } from '../class/movement.js';
 import { GameManager } from '../gameManager.js';
 import { managePlayerAnimation } from './playerAnimation.js';
+import playerActions from './playerActions.js';
 
 export class Player {
   constructor() {
@@ -11,6 +12,7 @@ export class Player {
     this.height = 1;
     this.movement = null;
     this.coordinates = null;
+    this.actions = playerActions;
   }
   draw(ctx, camera) {
     const game = GameManager.getInstance();

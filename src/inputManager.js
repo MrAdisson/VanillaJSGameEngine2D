@@ -7,6 +7,7 @@ export const keyManager = {};
 //Manage input and initiate player movement. If others actions are related to keyevents, they can be added here
 export const manageInput = ({ key }) => {
   const gameManager = new GameManager();
+  if (gameManager.isLoading) return;
   const player = gameManager.getPlayer();
   keyManager[key] = true;
   switch (key) {
@@ -38,8 +39,7 @@ export const manageInput = ({ key }) => {
       break;
     case 'b':
       //TOGGLE BYCICLE : (TODO: make it a player function)
-      if (gameManager.getPlayer().movement.isMoving) return;
-      gameManager.getPlayer().movement.speedBoost = gameManager.getPlayer().movement.speedBoost === 1 ? 2 : 1;
+      player.toggleBycicle();
       break;
     case '+':
       gameManager.getGrid().changeCellSize(gameManager.getGrid().CELL_SIZE + 1);
@@ -47,6 +47,9 @@ export const manageInput = ({ key }) => {
     case '-':
       gameManager.getGrid().changeCellSize(gameManager.getGrid().CELL_SIZE - 1);
       break;
+    case '*':
+      // DEBUG LOG BUTTON
+      console.log(gameManager);
     default:
       break;
   }

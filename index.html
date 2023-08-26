@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas Stuff</title>
-    <link rel="stylesheet" href="style.css">
     <script type="module" src="src/main.js" defer></script>
 </head>
 
@@ -32,7 +31,6 @@
     }
 
     #switch {
-        /* MAKE IT PERFECTLY CENTERED IN SCREEN */
         position: absolute;
         top: 50%;
         left: 50%;
@@ -44,10 +42,24 @@
 
 <body>
     <div>
-        <img src="./assets/web/switch.png" id="switch">
+        <!-- continue propagation on click image so as the canvas get the click -->
+        <img src="./assets/web/switch.png" id="switch" />
         <canvas id="game">
     </div>
+    <script>
+        document.getElementById('switch').addEventListener('click', function (e) {
+            var event = new MouseEvent('click', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true,
+                'clientX': e.clientX,
+                'clientY': e.clientY
+            });
+            document.getElementById('game').dispatchEvent(event);
+        });
+    </script>
 </body>
+
 
 
 </html>

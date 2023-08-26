@@ -46,4 +46,14 @@ export const ENTITIES = {
       src: './assets/ground/ground.png',
     },
   },
+  door: {
+    width: 1,
+    height: 1,
+    color: 'brown',
+    collides: false,
+    greetings: 'Hello, I am a door!',
+    // asset: {
+    //   src: './assets/door/door.png',
+    // },
+  },
 };

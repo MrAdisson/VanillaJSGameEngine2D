@@ -23,10 +23,18 @@ export class mapManager {
     return neededAssets;
   };
 
-  changeMap(mapname) {
+  async changeMap(mapname, initLocation = { x: 1, y: 1 }) {
+    console.log(`Changing from ${this.currentMap.name} map to ${mapname}`);
     this.currentMap = maps[mapname];
     this.currentMapName = mapname;
-    preloadAssets();
+    await preloadAssets();
+    const player = GameManager.getInstance().getPlayer();
+    //STOP PLAYER MOVEMENT
+    player.movement.isMoving = false;
+    player.location.x = initLocation.x * this.grid.CELL_SIZE;
+    player.location.y = initLocation.y * this.grid.CELL_SIZE;
+    player.coordinates.x = initLocation.x;
+    player.coordinates.y = initLocation.y;
   }
 
   getCurrentMap() {
@@ -50,10 +58,8 @@ export class mapManager {
           const asset = assetManager.getAsset(entitie);
           ctx.drawImage(
             asset,
-            location.x * this.grid.CELL_SIZE -
-              camera.getOffset(ctx).x,
-            location.y * this.grid.CELL_SIZE -
-              camera.getOffset(ctx).y,
+            location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
+            location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
             ENTITIES[entitie].width * this.grid.CELL_SIZE,
             ENTITIES[entitie].height * this.grid.CELL_SIZE
           );
@@ -70,8 +76,34 @@ export class mapManager {
     }
   }
 
+  checkIfPlayerIsOnWayPoint(player, map) {
+    if (map.wayPoints) {
+      const isOnWaypoint = map.wayPoints.some((wayPoint) => {
+        return wayPoint.locations.from.x === player.coordinates.x && wayPoint.locations.from.y === player.coordinates.y;
+      });
+      if (isOnWaypoint) {
+        const currentWayPoint = map.wayPoints.find((wayPoint) => {
+          return (
+            wayPoint.locations.from.x === player.coordinates.x && wayPoint.locations.from.y === player.coordinates.y
+          );
+        });
+        return currentWayPoint;
+      }
+      return false;
+    }
+  }
+
   updateMap(delta) {
-    //TO IMPLEMENT WHEN NEEDED
+    //CHECK IF PLAYER IS IN A CHANGING MAP POINT :
+    const game = GameManager.getInstance();
+    const player = game.getPlayer();
+    const map = game.getMap();
+    const grid = game.getGrid();
+    const wayPoint = this.checkIfPlayerIsOnWayPoint(player, map);
+    if (wayPoint) {
+      this.changeMap(wayPoint.destination, wayPoint.locations.to);
+      return;
+    }
   }
 
   update(delta) {

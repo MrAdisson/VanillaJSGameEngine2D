@@ -35,16 +35,26 @@ export const interact = () => {
     ENTITIES[
       Object.keys(map.objectsLocation).find((object) => {
         return map.objectsLocation[object].some((location) => {
-          return (
-            location.x === targetCell.x && location.y === targetCell.y
-          );
+          return location.x === targetCell.x && location.y === targetCell.y;
         });
       })
     ];
   if (interactingObject) {
-    game
-      .getUIManager()
-      .openDialog('greetings', interactingObject.greetings);
+    game.getUIManager().openDialog('greetings', interactingObject.greetings);
     // alert(interactingObject.greetings);
   }
 };
+
+export const toggleBycicle = () => {
+  const gameManager = new GameManager();
+  const player = gameManager.getPlayer();
+  if (player.movement.isMoving) return;
+  player.movement.speedBoost = gameManager.getPlayer().movement.speedBoost === 1 ? 2 : 1;
+};
+
+const playerActions = {
+  interact,
+  toggleBycicle,
+};
+
+export default playerActions;

@@ -27,6 +27,7 @@ canvas.addEventListener('click', (event) => {
 const game = new GameManager();
 game.init(canvas);
 
+const uiManager = game.getUIManager();
 preloadAssets();
 
 const FPS = 60;

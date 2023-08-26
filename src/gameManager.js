@@ -33,10 +33,6 @@ export class GameManager {
     this.camera = new Camera(this.player, canvas);
   }
 
-  changeMap(mapname) {
-    this.mapManager.changeMap(mapname);
-  }
-
   getMapManager() {
     return this.mapManager;
   }
@@ -61,13 +57,34 @@ export class GameManager {
     return this.uiManager;
   }
 
+  changeMap(mapname) {
+    this.mapManager.changeMap(mapname);
+  }
+
+  setIsLoading(isLoading) {
+    this.isLoading = isLoading;
+  }
+
+  isGameLoading() {
+    return this.isLoading;
+  }
+
   update(delta) {
+    if (this.isLoading) {
+      this.uiManager.updateLoadingScreen(delta);
+      return;
+    }
     this.mapManager.update(delta);
     this.player.update(delta);
-    this.camera.update();
+    this.uiManager.update(delta);
+    this.camera.update(delta);
   }
 
   draw(ctx) {
+    if (this.isLoading) {
+      this.uiManager.drawLoadingScreen(ctx);
+      return;
+    }
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.mapManager.draw(ctx, this.camera);
     this.player.draw(ctx, this.camera);
