@@ -39,8 +39,9 @@ export const interact = () => {
         });
       })
     ];
-  if (interactingObject) {
-    game.getUIManager().openDialog('greetings', interactingObject.greetings);
+  if (interactingObject && interactingObject.greetings) {
+    console.log('INTERACTING WITH :', interactingObject);
+    game.getUIManager().openDialog('greetings', interactingObject.greetings, interactingObject);
     // alert(interactingObject.greetings);
   }
 };

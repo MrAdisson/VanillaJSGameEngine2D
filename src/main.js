@@ -25,7 +25,7 @@ canvas.addEventListener('click', (event) => {
 
 // INITIALIZE GAME MANAGER, PLAYER, MAP MANAGER AND GRID
 const game = new GameManager();
-game.init(canvas);
+game.init();
 
 const uiManager = game.getUIManager();
 preloadAssets();
@@ -35,19 +35,29 @@ let lastTime;
 
 const requiredElapsed = 1000 / FPS;
 let delta;
+const FPSarray = [];
 
 const gameLoop = (now) => {
-  requestAnimationFrame(gameLoop);
   if (!lastTime) {
     lastTime = now;
   }
-  const elapsed = now - lastTime;
-  if (elapsed > requiredElapsed) {
-    delta = (now - lastTime) / 1000;
-    lastTime = now;
-    game.update(delta);
-    game.draw(ctx);
+  delta = (now - lastTime) / 1000;
+  game.draw(ctx);
+  game.update(delta);
+  lastTime = now;
+  if (delta !== 0) {
+    const trueFPS = 1 / delta;
+    FPSarray.push(trueFPS);
   }
+  if (FPSarray.length === 1000) {
+    // console.log(la moyenne des FPS);
+    const avg = FPSarray.reduce((a, b) => a + b) / FPSarray.length;
+    console.log('FPS : ', avg);
+    FPSarray.length = 0;
+  }
+  requestAnimationFrame(gameLoop);
+
+  //DRAW TRUE FPS
 };
 
 requestAnimationFrame(gameLoop);

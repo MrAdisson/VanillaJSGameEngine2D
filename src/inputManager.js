@@ -1,5 +1,4 @@
 import { GameManager } from './gameManager.js';
-import { interact } from './player/playerActions.js';
 
 //Key manager is used to store the state of the input keys
 export const keyManager = {};
@@ -32,14 +31,14 @@ export const manageInput = ({ key }) => {
       player.movement.initiateMovement('right');
       break;
     case 'e':
-      interact();
+      player.actions.interact();
       break;
     case 'f':
       gameManager.changeMap(gameManager.mapManager.currentMapName === 'map1' ? 'map2' : 'map1');
       break;
     case 'b':
       //TOGGLE BYCICLE : (TODO: make it a player function)
-      player.toggleBycicle();
+      player.actions.toggleBycicle();
       break;
     case '+':
       gameManager.getGrid().changeCellSize(gameManager.getGrid().CELL_SIZE + 1);

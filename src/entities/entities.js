@@ -2,6 +2,7 @@ export const ENTITIES = {
   tree: {
     width: 1,
     height: 1,
+    name: 'tree',
     color: 'green',
     collides: true,
     greetings: 'Hello, I am a tree!',
@@ -12,6 +13,7 @@ export const ENTITIES = {
   rock: {
     width: 1,
     height: 1,
+    name: 'rock',
     color: 'grey',
     collides: true,
     greetings: 'Hello, I am a rock!',
@@ -19,6 +21,7 @@ export const ENTITIES = {
   walls: {
     width: 1,
     height: 1,
+    name: 'walls',
     color: 'black',
     collides: true,
     greetings: 'Hello, I am a wall!',
@@ -29,6 +32,7 @@ export const ENTITIES = {
   water: {
     width: 1,
     height: 1,
+    name: 'water',
     color: 'blue',
     collides: true,
     greetings: 'Hello, I am water!',
@@ -38,17 +42,19 @@ export const ENTITIES = {
   },
   ground: {
     width: 1,
+    name: 'ground',
     height: 1,
-    color: 'brown',
+    color: 'darkgrey',
     collides: false,
     greetings: 'Hello, I am ground!',
-    asset: {
-      src: './assets/ground/ground.png',
-    },
+    // asset: {
+    //   src: './assets/ground/ground.png',
+    // },
   },
   door: {
     width: 1,
     height: 1,
+    name: 'door',
     color: 'brown',
     collides: false,
     greetings: 'Hello, I am a door!',

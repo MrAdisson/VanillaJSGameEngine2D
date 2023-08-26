@@ -28,9 +28,9 @@ export class GameManager {
     return GameManager.instance;
   }
 
-  init(canvas) {
+  init() {
     this.player.init();
-    this.camera = new Camera(this.player, canvas);
+    this.camera = new Camera({ followsPlayer: false });
   }
 
   getMapManager() {

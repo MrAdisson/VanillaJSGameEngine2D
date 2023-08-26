@@ -1,18 +1,20 @@
 export class DialogBox {
-  constructor(type, text) {
+  constructor(type, text, origin) {
     this.type = type;
     this.text = text;
     this.x = 0;
     this.y = 0;
     this.width = 0;
     this.height = 0;
+    this.origin = origin;
   }
 
   draw(ctx) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(0, 0, 600, 200);
+    // draw at the bottom of the screen:
+    ctx.fillRect(0, ctx.canvas.height - 100, ctx.canvas.width, 100);
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    ctx.fillText(this.text, 20, 20);
+    ctx.fillText(this.origin.name.toUpperCase() + ' : ' + this.text, 20, ctx.canvas.height - 70);
   }
 }

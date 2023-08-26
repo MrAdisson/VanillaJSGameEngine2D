@@ -9,8 +9,8 @@ export class UIManager {
     this.loadingTime = 0;
   }
 
-  openDialog(type, text) {
-    this.dialogBox = new DialogBox(type, text);
+  openDialog(type, text, origin) {
+    this.dialogBox = new DialogBox(type, text, origin);
   }
   closeDialog() {
     this.dialogBox = null;
