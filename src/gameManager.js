@@ -2,7 +2,7 @@ import { Camera } from './camera/camera.js';
 import { AssetManager } from './class/assetManager.js';
 import { mapManager } from './map/mapManager.js';
 import { Player } from './player/player.js';
-import { UIManager } from './ui/uiManager.js';
+import { UIManager } from './ui/UIManager.js';
 
 // GAME MANAGER SINGLETON
 
