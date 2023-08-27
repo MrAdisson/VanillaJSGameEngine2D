@@ -1,3 +1,4 @@
+import { Entity } from './entities/entities.js';
 import { GameManager } from './gameManager.js';
 
 export const logClickedCell = (event, ctx) => {
@@ -17,6 +18,5 @@ export const logClickedCell = (event, ctx) => {
     x: Math.floor((x + camera.x * camera.zoom - canvas.width / 2) / grid.CELL_SIZE / camera.zoom),
     y: Math.floor((y + camera.y * camera.zoom - canvas.height / 2) / grid.CELL_SIZE / camera.zoom),
   };
-
-  console.log(clickedCell);
+  console.log({ ...clickedCell, entity: Entity.getEntityAtCoordinates(clickedCell) });
 };

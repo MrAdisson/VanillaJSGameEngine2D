@@ -1,4 +1,4 @@
-import { ENTITIES } from '../entities/entities.js';
+import { Entity } from '../entities/entities.js';
 import { GameManager } from '../gameManager.js';
 
 export class Camera {
@@ -58,26 +58,32 @@ export class Camera {
 
     for (let x = topLeftCellCoordinates.x; x <= bottomRightCellCoordinates.x; x++) {
       for (let y = topLeftCellCoordinates.y; y <= bottomRightCellCoordinates.y; y++) {
-        const entity = map.getEntityAtCoordinates({ x, y });
-        if (entity) {
-          if (ENTITIES[entity].asset) {
-            const asset = game.getAssetManager().getAsset(entity);
+        const entityName = map.getEntityAtCoordinates({ x, y });
+        if (entityName) {
+          let entity = Entity.instances.find(
+            (entity) => entity.coordinates.x === x && entity.coordinates.y === y && entity.type === entityName
+          );
+          if (!entity) {
+            entity = new Entity({ type: entityName, coordinates: { x, y } });
+          }
+          if (entity.data.asset) {
+            const asset = game.getAssetManager().getAsset(entity.type);
             ctx.drawImage(
               asset,
               x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2,
               y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2,
-              ENTITIES[entity].width * grid.CELL_SIZE * this.zoom,
-              ENTITIES[entity].height * grid.CELL_SIZE * this.zoom
+              entity.data.width * grid.CELL_SIZE * this.zoom,
+              entity.data.height * grid.CELL_SIZE * this.zoom
             );
             drawnCellsCount++;
             continue;
           }
-          ctx.fillStyle = ENTITIES[entity].color;
+          ctx.fillStyle = entity.data.color;
           ctx.fillRect(
             x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2,
             y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2,
-            ENTITIES[entity].width * grid.CELL_SIZE * this.zoom,
-            ENTITIES[entity].height * grid.CELL_SIZE * this.zoom
+            entity.data.width * grid.CELL_SIZE * this.zoom,
+            entity.data.height * grid.CELL_SIZE * this.zoom
           );
           drawnCellsCount++;
         }

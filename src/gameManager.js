@@ -1,5 +1,6 @@
 import { Camera } from './camera/camera.js';
 import { AssetManager } from './class/assetManager.js';
+import { Entity } from './entities/entities.js';
 import { mapManager } from './map/mapManager.js';
 import { Player } from './player/player.js';
 import { UIManager } from './ui/UIManager.js';
@@ -77,6 +78,9 @@ export class GameManager {
     }
     this.mapManager.update(delta);
     this.player.update(delta);
+    Entity.instances.forEach((instance) => {
+      instance.update(delta);
+    });
     this.uiManager.update(delta);
     this.camera.update(delta);
   }

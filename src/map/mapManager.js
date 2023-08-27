@@ -1,4 +1,4 @@
-import { ENTITIES } from '../entities/entities.js';
+import { ENTITIES, Entity } from '../entities/entities.js';
 import { GameManager } from '../gameManager.js';
 import { Grid } from '../grid.js';
 import { preloadAssets } from '../preload.js';
@@ -25,6 +25,7 @@ export class mapManager {
 
   async changeMap(mapname, initLocation = { x: 1, y: 1 }) {
     console.log(`Changing from ${this.currentMap.name} map to ${mapname}`);
+    Entity.instances.length = 0;
     this.currentMap = maps[mapname];
     this.currentMapName = mapname;
     await preloadAssets();
@@ -49,37 +50,6 @@ export class mapManager {
     return this.grid;
   }
 
-  drawMap(ctx, camera) {
-    // let drawnCount = 0;
-    // for (const entitie in this.currentMap.objectsLocation) {
-    //   this.currentMap.objectsLocation[entitie].forEach((location) => {
-    //     if (ENTITIES[entitie].asset) {
-    //       const game = new GameManager();
-    //       const assetManager = game.getAssetManager();
-    //       const asset = assetManager.getAsset(entitie);
-    //       ctx.drawImage(
-    //         asset,
-    //         location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
-    //         location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
-    //         ENTITIES[entitie].width * this.grid.CELL_SIZE,
-    //         ENTITIES[entitie].height * this.grid.CELL_SIZE
-    //       );
-    //       drawnCount++;
-    //       return;
-    //     }
-    //     ctx.fillStyle = ENTITIES[entitie].color;
-    //     ctx.fillRect(
-    //       location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
-    //       location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
-    //       ENTITIES[entitie].width * this.grid.CELL_SIZE,
-    //       ENTITIES[entitie].height * this.grid.CELL_SIZE
-    //     );
-    //     drawnCount++;
-    //   });
-    // }
-    // console.log(`Drew ${drawnCount} cells`);
-  }
-
   checkIfPlayerIsOnWayPoint(player, map) {
     if (map.wayPoints) {
       const isOnWaypoint = map.wayPoints.some((wayPoint) => {
@@ -102,7 +72,6 @@ export class mapManager {
     const game = GameManager.getInstance();
     const player = game.getPlayer();
     const map = game.getMap();
-    const grid = game.getGrid();
     const wayPoint = this.checkIfPlayerIsOnWayPoint(player, map);
     if (wayPoint) {
       this.changeMap(wayPoint.destination, wayPoint.locations.to);
