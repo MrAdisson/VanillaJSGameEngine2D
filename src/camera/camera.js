@@ -76,7 +76,7 @@ export class Camera {
       );
     });
     entitiesToUninstantiate.forEach((entity) => {
-      console.log('UNINSTANTIATING TO FAR ENTITY :', entity, '\nRender distance :', this.entityRenderDistance);
+      // console.log('UNINSTANTIATING TO FAR ENTITY :', entity, '\nRender distance :', this.entityRenderDistance);
       Entity.instances.splice(Entity.instances.indexOf(entity), 1);
     });
   }
@@ -101,7 +101,7 @@ export class Camera {
           );
           if (!entity) {
             entity = new Entity({ type: entityName, coordinates: { x, y } });
-            console.log('NEW ENTITY INSTANCIATED :', entity);
+            // console.log('NEW ENTITY INSTANCIATED :', entity);
           }
           if (entity.data.asset) {
             const asset = game.getAssetManager().getAsset(entity.type);

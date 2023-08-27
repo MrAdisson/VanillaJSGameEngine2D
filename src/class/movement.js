@@ -92,7 +92,7 @@ export class Movement {
         };
         const collidingObject = Object.keys(map.objectsLocation).find((object) => {
           return map.objectsLocation[object].some((location) => {
-            return location.x === targetCell.x && location.y === targetCell.y && ENTITIES[object].collides;
+            return location.x === targetCell.x && location.y === targetCell.y && ENTITIES[object].collides();
           });
         });
         if (collidingObject) {

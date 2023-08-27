@@ -6,7 +6,9 @@ export const ENTITIES = {
     height: 1,
     name: 'tree',
     color: 'green',
-    collides: true,
+    collides: () => {
+      return true;
+    },
     greetings: 'Hello, I am a tree!',
     asset: {
       src: './assets/tree/tree.png',
@@ -17,7 +19,9 @@ export const ENTITIES = {
     height: 1,
     name: 'rock',
     color: 'grey',
-    collides: true,
+    collides: () => {
+      return true;
+    },
     greetings: 'Hello, I am a rock!',
   },
   walls: {
@@ -25,7 +29,9 @@ export const ENTITIES = {
     height: 1,
     name: 'walls',
     color: 'black',
-    collides: true,
+    collides: () => {
+      return true;
+    },
     greetings: 'Hello, I am a wall!',
     asset: {
       src: './assets/wall/wall.jpg',
@@ -36,7 +42,41 @@ export const ENTITIES = {
     height: 1,
     name: 'water',
     color: 'blue',
-    collides: true,
+    collides: () => {
+      const game = new GameManager();
+      const player = game.getPlayer();
+      if (player.isSurfing) {
+        return false;
+      }
+      return true;
+    },
+    onWalkOver: () => {
+      console.log('WALK ON WATER');
+      //RANDOM 1/12 TO LOG 'POKEMON ENCOUNTERED'
+      const random = Math.floor(Math.random() * 12);
+      if (random === 0) {
+        console.log('POKEMON ENCOUNTERED');
+      }
+    },
+    interactingAction: (e) => {
+      const game = new GameManager();
+      const player = game.getPlayer();
+      if (!player.isSurfing) {
+        player.isSurfing = true;
+        game.getUIManager().openDialog('greetings', 'You are now surfing!');
+        game.player.movement.setTarget(game.player.movement.direction);
+        game.player.movement.isMoving = true;
+      }
+    },
+    onLeave: () => {
+      const game = new GameManager();
+      const player = game.getPlayer();
+      if (Entity.getEntityAtCoordinates(player.coordinates).type === 'water') return;
+      if (player.isSurfing) {
+        player.isSurfing = false;
+        game.getUIManager().openDialog('greetings', 'You are no longer surfing!');
+      }
+    },
     greetings: 'Hello, I am water!',
     asset: {
       src: './assets/water/water.png',
@@ -47,7 +87,9 @@ export const ENTITIES = {
     name: 'ground',
     height: 1,
     color: 'darkgrey',
-    collides: false,
+    collides: () => {
+      return false;
+    },
     greetings: 'Hello, I am ground!',
     // asset: {
     //   src: './assets/ground/ground.png',
@@ -58,7 +100,9 @@ export const ENTITIES = {
     height: 1,
     name: 'door',
     color: 'brown',
-    collides: false,
+    collides: () => {
+      return false;
+    },
     greetings: 'Hello, I am a door!',
     // asset: {
     //   src: './assets/door/door.png',
@@ -69,7 +113,9 @@ export const ENTITIES = {
     height: 1,
     name: 'grass',
     color: 'green',
-    collides: false,
+    collides: () => {
+      return false;
+    },
     greetings: 'Hello, I am grass!',
     onWalkOver: () => {
       console.log('WALK ON GRASS');
@@ -78,6 +124,9 @@ export const ENTITIES = {
       if (random === 0) {
         console.log('POKEMON ENCOUNTERED');
       }
+    },
+    asset: {
+      src: './assets/grass/grass.png',
     },
   },
 };
@@ -102,11 +151,19 @@ export class Entity {
       this.data.onWalkOver();
     }
   }
+  onLeave() {
+    if (this.data.onLeave) {
+      this.data.onLeave();
+    }
+  }
 
   interactingAction() {
     const game = GameManager.getInstance();
     if (this.data.greetings) {
       game.getUIManager().openDialog('greetings', this.data.greetings, this);
+    }
+    if (this.data.interactingAction) {
+      this.data.interactingAction(this);
     }
   }
   update(delta) {
@@ -120,6 +177,7 @@ export class Entity {
       }
     } else {
       if (this.isWalkedOn) {
+        this.onLeave();
         this.isWalkedOn = false;
       }
     }

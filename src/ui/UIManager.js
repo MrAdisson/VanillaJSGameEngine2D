@@ -4,6 +4,7 @@ import { DialogBox } from './dialogBox.js';
 export class UIManager {
   //A CLASS THAT MANAGE UI ELEMENTS LIKE DIALOG BOXES, MENUS, ETC
   constructor() {
+    this.stopMovement = false;
     this.dialogBox = null;
     this.menu = null;
     this.loadingTime = 0;
@@ -12,9 +13,11 @@ export class UIManager {
 
   openDialog(type, text) {
     this.dialogBox = new DialogBox(type, text);
+    this.stopMovement = true;
   }
   closeDialog() {
     this.dialogBox = null;
+    this.stopMovement = false;
   }
   isDialogOpen() {
     return !!this.dialogBox;

@@ -46,6 +46,8 @@ gui.add(game.camera, 'verticalFieldOfView', 0, 2000, 1);
 gui.add(game.camera, 'entityRenderDistance', 0, 10, 1);
 gui.add(game, 'isPaused');
 gui.add(game, 'isLoading');
+gui.add(game.player, 'isSurfing');
+gui.add(game.player.movement, 'speedBoost', 0, 10, 0.1);
 const gameLoop = (now) => {
   if (!lastTime) {
     lastTime = now;

@@ -1,3 +1,4 @@
+import { Entity } from './entities/entities.js';
 import { GameManager } from './gameManager.js';
 
 //Key manager is used to store the state of the input keys
@@ -49,6 +50,7 @@ export const manageInput = ({ key }) => {
     case '*':
       // DEBUG LOG BUTTON
       console.log(gameManager);
+      console.log({ instanciatedEntities: Entity.instances });
     default:
       break;
   }

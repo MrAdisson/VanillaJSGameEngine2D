@@ -2,6 +2,7 @@ import { Movement } from '../class/movement.js';
 import { GameManager } from '../gameManager.js';
 import { managePlayerAnimation } from './playerAnimation.js';
 import playerActions from './playerActions.js';
+import { Entity } from '../entities/entities.js';
 
 export class Player {
   constructor() {
@@ -13,6 +14,7 @@ export class Player {
     this.movement = null;
     this.coordinates = null;
     this.actions = playerActions;
+    this.isSurfing = false;
   }
   draw(ctx, camera) {
     const game = GameManager.getInstance();
@@ -47,6 +49,8 @@ export class Player {
     this.move(delta);
   }
   move(delta) {
+    const game = new GameManager();
+    if (game.uiManager.stopMovement) return;
     const hasReached = this.movement.move(delta);
     if (hasReached) {
       Movement.setNextTarget(this);
