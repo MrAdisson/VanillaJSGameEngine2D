@@ -21,10 +21,10 @@ document.addEventListener('keyup', (event) => {
 
 // PRE LOAD STATIC IMAGES:
 
-//ON CLICK ON A CELL, LOG CELL COORDINATES
-// canvas.addEventListener('click', (event) => {
-//   logClickedCell(event, ctx);
-// });
+// ON CLICK ON A CELL, LOG CELL COORDINATES
+canvas.addEventListener('click', (event) => {
+  logClickedCell(event, ctx);
+});
 
 // INITIALIZE GAME MANAGER, PLAYER, MAP MANAGER AND GRID
 const game = new GameManager();
@@ -44,6 +44,7 @@ gui.add(game.camera, 'zoom', 0.1, 10, 0.1);
 gui.add(game.camera, 'horizontalFieldOfView', 0, 2000, 1);
 gui.add(game.camera, 'verticalFieldOfView', 0, 2000, 1);
 gui.add(game, 'isPaused');
+gui.add(game, 'isLoading');
 const gameLoop = (now) => {
   if (!lastTime) {
     lastTime = now;
