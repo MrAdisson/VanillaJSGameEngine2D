@@ -1,6 +1,6 @@
 import { mapStringToMap } from '../util.js';
 
-const PALLET_TOWN = `WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+const BACKGROUND_LAYER = `WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXW
 WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXW
 WXXXXXXRXXXXXXXXXXXXXXXXXXXXXXXW
@@ -29,7 +29,7 @@ const mapStringLegend = {
   D: 'door',
 };
 
-const processedMap = mapStringToMap(PALLET_TOWN, mapStringLegend);
+const processedMap = mapStringToMap(BACKGROUND_LAYER, mapStringLegend);
 
 export const map2 = {
   ...processedMap,

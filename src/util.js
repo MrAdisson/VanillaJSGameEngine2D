@@ -11,6 +11,14 @@ export const getSign = (number) => {
 export const mapStringToMap = (mapString, mapStringLegend) => {
   const map = {
     objectsLocation: {},
+    getEntityAtCoordinates: (location) => {
+      for (const entitie in map.objectsLocation) {
+        if (map.objectsLocation[entitie].find((loc) => loc.x === location.x && loc.y === location.y)) {
+          return entitie;
+        }
+      }
+      return null;
+    },
   };
   const mapStringArray = mapString.split('\n');
   mapStringArray.forEach((row, y) => {

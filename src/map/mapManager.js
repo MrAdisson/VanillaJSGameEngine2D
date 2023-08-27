@@ -50,30 +50,34 @@ export class mapManager {
   }
 
   drawMap(ctx, camera) {
-    for (const entitie in this.currentMap.objectsLocation) {
-      this.currentMap.objectsLocation[entitie].forEach((location) => {
-        if (ENTITIES[entitie].asset) {
-          const game = new GameManager();
-          const assetManager = game.getAssetManager();
-          const asset = assetManager.getAsset(entitie);
-          ctx.drawImage(
-            asset,
-            location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
-            location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
-            ENTITIES[entitie].width * this.grid.CELL_SIZE,
-            ENTITIES[entitie].height * this.grid.CELL_SIZE
-          );
-          return;
-        }
-        ctx.fillStyle = ENTITIES[entitie].color;
-        ctx.fillRect(
-          location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
-          location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
-          ENTITIES[entitie].width * this.grid.CELL_SIZE,
-          ENTITIES[entitie].height * this.grid.CELL_SIZE
-        );
-      });
-    }
+    // let drawnCount = 0;
+    // for (const entitie in this.currentMap.objectsLocation) {
+    //   this.currentMap.objectsLocation[entitie].forEach((location) => {
+    //     if (ENTITIES[entitie].asset) {
+    //       const game = new GameManager();
+    //       const assetManager = game.getAssetManager();
+    //       const asset = assetManager.getAsset(entitie);
+    //       ctx.drawImage(
+    //         asset,
+    //         location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
+    //         location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
+    //         ENTITIES[entitie].width * this.grid.CELL_SIZE,
+    //         ENTITIES[entitie].height * this.grid.CELL_SIZE
+    //       );
+    //       drawnCount++;
+    //       return;
+    //     }
+    //     ctx.fillStyle = ENTITIES[entitie].color;
+    //     ctx.fillRect(
+    //       location.x * this.grid.CELL_SIZE - camera.getOffset(ctx).x,
+    //       location.y * this.grid.CELL_SIZE - camera.getOffset(ctx).y,
+    //       ENTITIES[entitie].width * this.grid.CELL_SIZE,
+    //       ENTITIES[entitie].height * this.grid.CELL_SIZE
+    //     );
+    //     drawnCount++;
+    //   });
+    // }
+    // console.log(`Drew ${drawnCount} cells`);
   }
 
   checkIfPlayerIsOnWayPoint(player, map) {

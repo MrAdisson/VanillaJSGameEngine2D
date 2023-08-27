@@ -15,6 +15,7 @@ export class GameManager {
       this.player = new Player();
       this.assetManager = new AssetManager();
       this.uiManager = new UIManager();
+      this.isPaused = false;
     }
     return GameManager.instance;
   }
@@ -28,9 +29,9 @@ export class GameManager {
     return GameManager.instance;
   }
 
-  init() {
+  init(ctx) {
     this.player.init();
-    this.camera = new Camera({ followsPlayer: false });
+    this.camera = new Camera({ followsPlayer: true, ctx: ctx });
   }
 
   getMapManager() {
@@ -85,9 +86,7 @@ export class GameManager {
       this.uiManager.drawLoadingScreen(ctx);
       return;
     }
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.mapManager.draw(ctx, this.camera);
-    this.player.draw(ctx, this.camera);
+    this.camera.render(ctx);
     this.uiManager.draw(ctx, this.camera);
   }
 }

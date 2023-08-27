@@ -7,6 +7,7 @@ export class UIManager {
     this.dialogBox = null;
     this.menu = null;
     this.loadingTime = 0;
+    this.delta = 0;
   }
 
   openDialog(type, text, origin) {
@@ -33,6 +34,7 @@ export class UIManager {
   }
 
   update(delta) {
+    this.delta = delta;
     const game = GameManager.getInstance();
     if (!game.isGameLoading()) {
       this.loadingTime = 0;
@@ -40,6 +42,7 @@ export class UIManager {
   }
 
   draw(ctx) {
+    // this.showFPS(ctx);
     if (this.dialogBox) {
       this.dialogBox.draw(ctx);
     }
