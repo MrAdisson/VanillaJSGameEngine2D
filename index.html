@@ -47,11 +47,12 @@
 <body>
     <div>
         <!-- continue propagation on click image so as the canvas get the click -->
-        <img src="./assets/web/switch.png" id="switch" />
+        <img src="./assets/web/switch.png" id="switch" ondragstart="return false" />
         <canvas id="game">
     </div>
     <script>
-        document.getElementById('switch').addEventListener('click', function (e) {
+        const switchElem = document.getElementById('switch');
+        switchElem.addEventListener('click', function (e) {
             var event = new MouseEvent('click', {
                 'view': window,
                 'bubbles': true,

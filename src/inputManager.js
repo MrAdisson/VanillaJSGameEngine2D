@@ -5,7 +5,9 @@ import { GameManager } from './gameManager.js';
 export const keyManager = {};
 
 //Manage input and initiate player movement. If others actions are related to keyevents, they can be added here
-export const manageInput = ({ key }) => {
+export const manageInput = (e) => {
+  const { key } = e;
+  e.preventDefault();
   const gameManager = new GameManager();
   if (gameManager.isLoading) return;
   const player = gameManager.getPlayer();
