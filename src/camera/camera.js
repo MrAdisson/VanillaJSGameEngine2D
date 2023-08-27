@@ -55,6 +55,35 @@ export class Camera {
     };
   }
 
+  drawGrid(ctx, grid) {
+    ctx.beginPath();
+    ctx.strokeStyle = grid.BORDER_COLOR;
+    ctx.lineWidth = grid.BORDER_WIDTH;
+    for (
+      let y = (-this.y * this.zoom + ctx.canvas.height / 2) % (grid.CELL_SIZE * this.zoom);
+      y < ctx.canvas.height;
+      y += grid.CELL_SIZE * this.zoom
+    ) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(ctx.canvas.width, y);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    for (
+      let x = (-this.x * this.zoom + ctx.canvas.width / 2) % (grid.CELL_SIZE * this.zoom);
+      x < ctx.canvas.width;
+      x += grid.CELL_SIZE * this.zoom
+    ) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, ctx.canvas.height);
+    }
+    ctx.stroke();
+    for (let y = (-this.y + ctx.canvas.height / 2) % grid.CELL_SIZE; y < ctx.canvas.height; y += grid.CELL_SIZE) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(ctx.canvas.width, y);
+    }
+  }
+
   update(delta) {
     if (this.followsPlayer) {
       const game = GameManager.getInstance();
@@ -63,9 +92,7 @@ export class Camera {
       this.y = player.location.y;
     }
     //UNINSTANTIATE ENTITIES OUT OF CAMERA VIEW:
-    const game = GameManager.getInstance();
-    const map = game.getMap();
-    const grid = game.getGrid();
+
     const { topLeftCellCoordinates, bottomRightCellCoordinates } = this.getBorderCoordinates();
     const entitiesToUninstantiate = Entity.instances.filter((entity) => {
       return (
@@ -107,20 +134,20 @@ export class Camera {
             const asset = game.getAssetManager().getAsset(entity.type);
             ctx.drawImage(
               asset,
-              x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2,
-              y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2,
-              entity.data.width * grid.CELL_SIZE * this.zoom,
-              entity.data.height * grid.CELL_SIZE * this.zoom
+              Math.round(x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2),
+              Math.round(y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2),
+              Math.round(entity.data.width * grid.CELL_SIZE * this.zoom),
+              Math.round(entity.data.height * grid.CELL_SIZE * this.zoom)
             );
             drawnCellsCount++;
             continue;
           }
           ctx.fillStyle = entity.data.color;
           ctx.fillRect(
-            x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2,
-            y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2,
-            entity.data.width * grid.CELL_SIZE * this.zoom,
-            entity.data.height * grid.CELL_SIZE * this.zoom
+            Math.round(x * grid.CELL_SIZE * this.zoom - this.x * this.zoom + ctx.canvas.width / 2),
+            Math.round(y * grid.CELL_SIZE * this.zoom - this.y * this.zoom + ctx.canvas.height / 2),
+            Math.round(entity.data.width * grid.CELL_SIZE * this.zoom),
+            Math.round(entity.data.height * grid.CELL_SIZE * this.zoom)
           );
           drawnCellsCount++;
         }
@@ -128,39 +155,14 @@ export class Camera {
     }
     //GRID DRAWING:
     if (this.showGrid) {
-      ctx.beginPath();
-      ctx.strokeStyle = grid.BORDER_COLOR;
-      ctx.lineWidth = grid.BORDER_WIDTH;
-      for (
-        let y = (-this.y * this.zoom + ctx.canvas.height / 2) % (grid.CELL_SIZE * this.zoom);
-        y < ctx.canvas.height;
-        y += grid.CELL_SIZE * this.zoom
-      ) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(ctx.canvas.width, y);
-      }
-      ctx.stroke();
-      ctx.beginPath();
-      for (
-        let x = (-this.x * this.zoom + ctx.canvas.width / 2) % (grid.CELL_SIZE * this.zoom);
-        x < ctx.canvas.width;
-        x += grid.CELL_SIZE * this.zoom
-      ) {
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, ctx.canvas.height);
-      }
-      ctx.stroke();
-      for (let y = (-this.y + ctx.canvas.height / 2) % grid.CELL_SIZE; y < ctx.canvas.height; y += grid.CELL_SIZE) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(ctx.canvas.width, y);
-      }
+      this.drawGrid(ctx, grid);
     }
 
     //PLAYER DRAWING:
     ctx.fillStyle = player.color;
     ctx.fillRect(
-      player.location.x * this.zoom - this.x * this.zoom + ctx.canvas.width / 2,
-      player.location.y * this.zoom - this.y * this.zoom + ctx.canvas.height / 2,
+      Math.round(player.location.x * this.zoom - this.x * this.zoom + ctx.canvas.width / 2),
+      Math.round(player.location.y * this.zoom - this.y * this.zoom + ctx.canvas.height / 2),
       player.width * grid.CELL_SIZE * this.zoom,
       player.height * grid.CELL_SIZE * this.zoom
     );

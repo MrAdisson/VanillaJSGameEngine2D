@@ -15,5 +15,9 @@ export class DialogBox {
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
     ctx.fillText(this.text, 20, ctx.canvas.height - 70);
+    // DRAW (PRESS E TO CLOSE) IN THE BOTTOM RIGHT CORNER:
+    const closeText = '(Press E to close)';
+    const closeTextWidth = ctx.measureText(closeText).width;
+    ctx.fillText(closeText, ctx.canvas.width - closeTextWidth - 20, ctx.canvas.height - 20);
   }
 }
