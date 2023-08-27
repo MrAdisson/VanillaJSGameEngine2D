@@ -10,8 +10,8 @@ export class UIManager {
     this.delta = 0;
   }
 
-  openDialog(type, text, origin) {
-    this.dialogBox = new DialogBox(type, text, origin);
+  openDialog(type, text) {
+    this.dialogBox = new DialogBox(type, text);
   }
   closeDialog() {
     this.dialogBox = null;

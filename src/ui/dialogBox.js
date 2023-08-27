@@ -1,12 +1,11 @@
 export class DialogBox {
-  constructor(type, text, origin) {
+  constructor(type, text) {
     this.type = type;
     this.text = text;
     this.x = 0;
     this.y = 0;
     this.width = 0;
     this.height = 0;
-    this.origin = origin;
   }
 
   draw(ctx) {
@@ -15,6 +14,6 @@ export class DialogBox {
     ctx.fillRect(0, ctx.canvas.height - 100, ctx.canvas.width, 100);
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    ctx.fillText(this.origin.name.toUpperCase() + ' : ' + this.text, 20, ctx.canvas.height - 70);
+    ctx.fillText(this.text, 20, ctx.canvas.height - 70);
   }
 }

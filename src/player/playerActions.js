@@ -1,4 +1,4 @@
-import { ENTITIES } from '../entities/entities.js';
+import { ENTITIES, Entity } from '../entities/entities.js';
 import { GameManager } from '../gameManager.js';
 
 export const interact = () => {
@@ -31,17 +31,16 @@ export const interact = () => {
     default:
       break;
   }
-  const interactingObject =
-    ENTITIES[
-      Object.keys(map.objectsLocation).find((object) => {
-        return map.objectsLocation[object].some((location) => {
-          return location.x === targetCell.x && location.y === targetCell.y;
-        });
-      })
-    ];
-  if (interactingObject && interactingObject.greetings) {
-    console.log('INTERACTING WITH :', interactingObject);
-    game.getUIManager().openDialog('greetings', interactingObject.greetings, interactingObject);
+  const interactingEntity = Entity.getEntityAtCoordinates(targetCell);
+  // ENTITIES[
+  //   Object.keys(map.objectsLocation).find((object) => {
+  //     return map.objectsLocation[object].some((location) => {
+  //       return location.x === targetCell.x && location.y === targetCell.y;
+  //     });
+  //   })
+  // ];
+  if (interactingEntity) {
+    interactingEntity.interactingAction();
   }
 };
 

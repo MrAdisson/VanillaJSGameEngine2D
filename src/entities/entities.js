@@ -103,6 +103,12 @@ export class Entity {
     }
   }
 
+  interactingAction() {
+    const game = GameManager.getInstance();
+    if (this.data.greetings) {
+      game.getUIManager().openDialog('greetings', this.data.greetings, this);
+    }
+  }
   update(delta) {
     if (
       this.coordinates.x === GameManager.getInstance().getPlayer().coordinates.x &&
@@ -118,6 +124,5 @@ export class Entity {
       }
     }
   }
-
   static instances = [];
 }

@@ -43,6 +43,7 @@ gui.add(game.camera, 'y');
 gui.add(game.camera, 'zoom', 0.1, 10, 0.1);
 gui.add(game.camera, 'horizontalFieldOfView', 0, 2000, 1);
 gui.add(game.camera, 'verticalFieldOfView', 0, 2000, 1);
+gui.add(game.camera, 'entityRenderDistance', 0, 10, 1);
 gui.add(game, 'isPaused');
 gui.add(game, 'isLoading');
 const gameLoop = (now) => {

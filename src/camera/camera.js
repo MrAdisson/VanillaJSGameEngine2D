@@ -13,6 +13,7 @@ export class Camera {
     this.movingDirection = game.getPlayer().movement.direction;
     this.showGrid = false;
     this.zoom = 1;
+    this.entityRenderDistance = 5; // number of cells out of the camera view to keep entities instantiated
   }
 
   getOffset(ctx) {
@@ -28,6 +29,32 @@ export class Camera {
     return { x: 0, y: 0 };
   }
 
+  getBorderCoordinates() {
+    const grid = GameManager.getInstance().getGrid();
+    const topLeftCellCoordinates = {
+      x: Math.floor((this.x - this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      y: Math.floor((this.y - this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+    };
+    const bottomRightCellCoordinates = {
+      x: Math.floor((this.x + this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      y: Math.floor((this.y + this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+    };
+    const topRightCellCoordinates = {
+      x: bottomRightCellCoordinates.x,
+      y: topLeftCellCoordinates.y,
+    };
+    const bottomLeftCellCoordinates = {
+      x: topLeftCellCoordinates.x,
+      y: bottomRightCellCoordinates.y,
+    };
+    return {
+      topLeftCellCoordinates,
+      bottomRightCellCoordinates,
+      topRightCellCoordinates,
+      bottomLeftCellCoordinates,
+    };
+  }
+
   update(delta) {
     if (this.followsPlayer) {
       const game = GameManager.getInstance();
@@ -35,6 +62,23 @@ export class Camera {
       this.x = player.location.x;
       this.y = player.location.y;
     }
+    //UNINSTANTIATE ENTITIES OUT OF CAMERA VIEW:
+    const game = GameManager.getInstance();
+    const map = game.getMap();
+    const grid = game.getGrid();
+    const { topLeftCellCoordinates, bottomRightCellCoordinates } = this.getBorderCoordinates();
+    const entitiesToUninstantiate = Entity.instances.filter((entity) => {
+      return (
+        entity.coordinates.x < topLeftCellCoordinates.x - this.entityRenderDistance ||
+        entity.coordinates.x > bottomRightCellCoordinates.x + this.entityRenderDistance ||
+        entity.coordinates.y < topLeftCellCoordinates.y - this.entityRenderDistance ||
+        entity.coordinates.y > bottomRightCellCoordinates.y + this.entityRenderDistance
+      );
+    });
+    entitiesToUninstantiate.forEach((entity) => {
+      console.log('UNINSTANTIATING TO FAR ENTITY :', entity, '\nRender distance :', this.entityRenderDistance);
+      Entity.instances.splice(Entity.instances.indexOf(entity), 1);
+    });
   }
 
   render(ctx) {
@@ -45,16 +89,8 @@ export class Camera {
     const grid = game.getGrid();
 
     let drawnCellsCount = 0;
-
     //MAP DRAWING:
-    const topLeftCellCoordinates = {
-      x: Math.floor((this.x - this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-      y: Math.floor((this.y - this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-    };
-    const bottomRightCellCoordinates = {
-      x: Math.floor((this.x + this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-      y: Math.floor((this.y + this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-    };
+    const { topLeftCellCoordinates, bottomRightCellCoordinates } = this.getBorderCoordinates();
 
     for (let x = topLeftCellCoordinates.x; x <= bottomRightCellCoordinates.x; x++) {
       for (let y = topLeftCellCoordinates.y; y <= bottomRightCellCoordinates.y; y++) {
@@ -65,6 +101,7 @@ export class Camera {
           );
           if (!entity) {
             entity = new Entity({ type: entityName, coordinates: { x, y } });
+            console.log('NEW ENTITY INSTANCIATED :', entity);
           }
           if (entity.data.asset) {
             const asset = game.getAssetManager().getAsset(entity.type);
