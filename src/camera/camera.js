@@ -32,12 +32,12 @@ export class Camera {
   getBorderCoordinates() {
     const grid = GameManager.getInstance().getGrid();
     const topLeftCellCoordinates = {
-      x: Math.floor((this.x - this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-      y: Math.floor((this.y - this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      x: Math.round((this.x - this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      y: Math.round((this.y - this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
     };
     const bottomRightCellCoordinates = {
-      x: Math.floor((this.x + this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
-      y: Math.floor((this.y + this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      x: Math.round((this.x + this.horizontalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
+      y: Math.round((this.y + this.verticalFieldOfView / 2 / this.zoom) / grid.CELL_SIZE),
     };
     const topRightCellCoordinates = {
       x: bottomRightCellCoordinates.x,

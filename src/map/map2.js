@@ -46,4 +46,5 @@ export const map2 = {
       locations: { from: { x: 5, y: 6 }, to: { x: 5, y: 5 } },
     },
   ],
+  terrains: ['default', 'water'],
 };

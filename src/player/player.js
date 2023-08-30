@@ -2,7 +2,6 @@ import { Movement } from '../class/movement.js';
 import { GameManager } from '../gameManager.js';
 import { managePlayerAnimation } from './playerAnimation.js';
 import playerActions from './playerActions.js';
-import { Entity } from '../entities/entities.js';
 
 export class Player {
   constructor() {

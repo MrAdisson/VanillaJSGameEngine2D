@@ -1,3 +1,4 @@
+import { BattleManager } from './battle/battleManager.js';
 import { Camera } from './camera/camera.js';
 import { AssetManager } from './class/assetManager.js';
 import { Entity } from './entities/entities.js';
@@ -17,6 +18,8 @@ export class GameManager {
       this.assetManager = new AssetManager();
       this.uiManager = new UIManager();
       this.isPaused = false;
+      this.currentScene = 'world';
+      this.battleManager = new BattleManager();
     }
     return GameManager.instance;
   }
@@ -24,8 +27,6 @@ export class GameManager {
   static getInstance() {
     if (!GameManager.instance) {
       GameManager.instance = this;
-      this.player = new Player();
-      this.mapManager = new mapManager('map1');
     }
     return GameManager.instance;
   }
@@ -33,6 +34,10 @@ export class GameManager {
   init(ctx) {
     this.player.init();
     this.camera = new Camera({ followsPlayer: true, ctx: ctx });
+  }
+
+  setCurrentScene(scene) {
+    this.currentScene = scene;
   }
 
   getMapManager() {
@@ -71,11 +76,21 @@ export class GameManager {
     return this.isLoading;
   }
 
+  instantiateBattle(player, enemy, terrain) {
+    this.battleManager.instantiateBattle(player, enemy, terrain);
+    this.currentScene = 'battle';
+  }
+
+  getBattleManager() {
+    return this.battleManager;
+  }
+
   update(delta) {
     if (this.isLoading) {
       this.uiManager.updateLoadingScreen(delta);
       return;
     }
+
     this.mapManager.update(delta);
     this.player.update(delta);
     Entity.instances.forEach((instance) => {
@@ -83,6 +98,12 @@ export class GameManager {
     });
     this.uiManager.update(delta);
     this.camera.update(delta);
+
+    // if (this.currentScene === 'battle') {
+    //   this.player.update(delta);
+    //   this.uiManager.update(delta);
+    //   // this.battleManager.update(delta);
+    // }
   }
 
   draw(ctx) {
@@ -90,7 +111,14 @@ export class GameManager {
       this.uiManager.drawLoadingScreen(ctx);
       return;
     }
-    this.camera.render(ctx);
-    this.uiManager.draw(ctx, this.camera);
+    if (this.currentScene === 'world') {
+      this.camera.render(ctx);
+      this.uiManager.draw(ctx, this.camera);
+    }
+
+    if (this.currentScene === 'battle') {
+      this.uiManager.draw(ctx, this.camera);
+      this.battleManager.draw(ctx);
+    }
   }
 }

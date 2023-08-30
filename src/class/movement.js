@@ -84,6 +84,9 @@ export class Movement {
   move = (delta) => {
     const map = GameManager.getInstance().mapManager.currentMap;
     const grid = GameManager.getInstance().getGrid();
+    const uiManager = GameManager.getInstance().getUIManager();
+
+    if (uiManager.isDialogOpen()) return;
     if (this.parent.collides) {
       if (this.target) {
         const targetCell = {
@@ -126,6 +129,8 @@ export class Movement {
   };
 
   static setNextTarget(player) {
+    if (GameManager.getInstance().getUIManager().isDialogOpen()) return;
+    if (GameManager.getInstance().getBattleManager().isBattling()) return;
     const grid = GameManager.getInstance().getGrid();
     if (keyManager['ArrowUp'] || keyManager['z']) {
       player.movement.direction = 'top';

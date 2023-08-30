@@ -10,6 +10,10 @@ export const preloadAssets = async () => {
   let loadedAssets = 0;
   const missingAssets = {};
 
+  //PRELOAD MAP TERRAINS :
+
+  console.log(neededAssets);
+
   for (const assetName in neededAssets) {
     if (!assetManager.getAsset(assetName)) {
       missingAssets[assetName] = neededAssets[assetName];

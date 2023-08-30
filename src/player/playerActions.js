@@ -3,10 +3,7 @@ import { GameManager } from '../gameManager.js';
 
 export const interact = () => {
   const game = new GameManager();
-  if (game.getUIManager().isDialogOpen()) {
-    game.getUIManager().closeDialog();
-    return;
-  }
+
   const map = game.getMap();
   const grid = game.getGrid();
   const player = game.getPlayer();

@@ -20,7 +20,7 @@ export class UIManager {
     this.stopMovement = false;
   }
   isDialogOpen() {
-    return !!this.dialogBox;
+    return this.dialogBox !== null && this.dialogBox !== undefined;
   }
 
   drawLoadingScreen(ctx) {
@@ -43,6 +43,8 @@ export class UIManager {
       this.loadingTime = 0;
     }
   }
+
+  drawBattle(ctx) {}
 
   draw(ctx) {
     // this.showFPS(ctx);

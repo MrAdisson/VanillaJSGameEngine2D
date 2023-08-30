@@ -56,6 +56,9 @@ export const ENTITIES = {
       const random = Math.floor(Math.random() * 12);
       if (random === 0) {
         console.log('POKEMON ENCOUNTERED');
+        const game = new GameManager();
+        const player = game.getPlayer();
+        game.instantiateBattle(player, 'pikachu', 'water');
       }
     },
     interactingAction: (e) => {
@@ -123,6 +126,9 @@ export const ENTITIES = {
       const random = Math.floor(Math.random() * 12);
       if (random === 0) {
         console.log('POKEMON ENCOUNTERED');
+        const game = new GameManager();
+        const player = game.getPlayer();
+        game.instantiateBattle(player, 'pikachu', 'default');
       }
     },
     asset: {

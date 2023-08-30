@@ -20,6 +20,13 @@ export class mapManager {
         neededAssets[entitie] = ENTITIES[entitie].asset;
       }
     }
+
+    //FOR EACH TERRAIN IN THIS MAP GET ./assets/{terrainName}.asset and store it in a [{ terrainName: assetSrcStr }] object:
+    this.currentMap.terrains.forEach((terrain) => {
+      console.log(this.currentMap);
+      console.log(terrain);
+      neededAssets[terrain + 'Battle'] = { src: `./assets/battle/terrain/${terrain}.png` };
+    });
     return neededAssets;
   };
 

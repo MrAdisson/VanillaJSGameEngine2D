@@ -14,10 +14,6 @@ canvas.height = 576;
 const gui = new GUI();
 
 //ADD EVENT LISTENERS FOR KEYBOARD INPUT
-document.addEventListener('keydown', manageInput);
-document.addEventListener('keyup', (event) => {
-  keyManager[event.key] = false;
-});
 
 // PRE LOAD STATIC IMAGES:
 
@@ -29,6 +25,11 @@ canvas.addEventListener('click', (event) => {
 // INITIALIZE GAME MANAGER, PLAYER, MAP MANAGER AND GRID
 const game = new GameManager();
 game.init(ctx);
+
+document.addEventListener('keydown', manageInput);
+document.addEventListener('keyup', (event) => {
+  keyManager[event.key] = false;
+});
 
 const uiManager = game.getUIManager();
 preloadAssets();
