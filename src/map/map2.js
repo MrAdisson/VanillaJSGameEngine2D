@@ -5,7 +5,7 @@ WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXW
 WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXW
 WXXXXXXRXXXXXXXXXXXXXXXXXXXXXXXW
 WXXXXXXRXXWXXRRXXWWWXXXXXXXXXXXW
-WXXXXXXXXXWXXXXXXDWWXXOXXXXXXXXW
+WXXXXxXXXXWXXXXXxDWWXXOXXXXXXXXW
 WXXXWDWXXXWXXXXXXWWWXXOXXXXXXXXW
 WXXXWWWXXXWXWWWXXXXXXXOXXXXXXXXW
 WXXXXXXXXXWXWXXXXXXOOOOXXXXXXXXW
@@ -24,7 +24,8 @@ const mapStringLegend = {
   R: 'rock',
   T: 'tree',
   W: 'walls',
-  X: 'ground',
+  X: 'caveGround',
+  x: 'ground',
   O: 'water',
   D: 'door',
 };
@@ -46,5 +47,59 @@ export const map2 = {
       locations: { from: { x: 5, y: 6 }, to: { x: 5, y: 5 } },
     },
   ],
-  terrains: ['default', 'water'],
+  terrains: ['default', 'water', 'cave'],
+  encounters: {
+    water: [
+      {
+        name: 'Magicarpe',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+      {
+        name: 'Tentacool',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+    ],
+    ground: [
+      {
+        name: 'Racaillou',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+      {
+        name: 'Nosferapti',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+      {
+        name: 'Gravalanche',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 0.5,
+      },
+      {
+        name: 'Evoli',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 0.1,
+      },
+    ],
+  },
 };

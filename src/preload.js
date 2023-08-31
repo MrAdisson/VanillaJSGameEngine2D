@@ -12,8 +12,6 @@ export const preloadAssets = async () => {
 
   //PRELOAD MAP TERRAINS :
 
-  console.log(neededAssets);
-
   for (const assetName in neededAssets) {
     if (!assetManager.getAsset(assetName)) {
       missingAssets[assetName] = neededAssets[assetName];
@@ -38,7 +36,6 @@ export const preloadAssets = async () => {
       console.log(`%cLoaded ${assetName}`, 'color: lime');
       loadedAssets++;
       if (loadedAssets === Object.keys(missingAssets).length) {
-        console.log('ASSETS:', assetManager.getAssets());
         loadedAssets = 0;
         console.timeEnd('Assets loaded in');
         console.log('%c[INFO] ALL NEEDED ASSETS LOADED', 'color: cyan');

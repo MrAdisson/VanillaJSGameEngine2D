@@ -15,8 +15,8 @@ TXXXRXXXXXXXXXXXXXXXXXXXXXXXXXXT
 TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXT
 TOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXT
 TOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXT
-TOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXT
-TGGOOOXXXXXXXXXXXXXXXXXXXXXXXXXT
+TOOOOOXXXXXXXXXXXXXXXXXXGGGGGGGT
+TGGOOOXXXXXXXXXXXXXXXXXXGGGGGGGT
 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 `;
 
@@ -47,4 +47,50 @@ export const map1 = {
     },
   ],
   terrains: ['default', 'water'],
+  encounters: {
+    water: [
+      {
+        name: 'Magicarpe',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+      {
+        name: 'Tentacool',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+    ],
+    grass: [
+      {
+        name: 'Mystherbe',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 1,
+      },
+      {
+        name: 'Pikachu',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 0.5,
+      },
+      {
+        name: 'Evoli',
+        level: {
+          min: 2,
+          max: 10,
+        },
+        chance: 0.1,
+      },
+    ],
+  },
 };

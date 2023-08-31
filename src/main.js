@@ -49,6 +49,16 @@ gui.add(game, 'isPaused');
 gui.add(game, 'isLoading');
 gui.add(game.player, 'isSurfing');
 gui.add(game.player.movement, 'speedBoost', 0, 10, 0.1);
+
+// SAVE AND LOAD GAME
+
+document.getElementById('save').addEventListener('click', () => {
+  game.save();
+});
+document.getElementById('load').addEventListener('click', () => {
+  game.load();
+});
+
 const gameLoop = (now) => {
   if (!lastTime) {
     lastTime = now;

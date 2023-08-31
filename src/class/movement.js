@@ -4,8 +4,7 @@ import { keyManager } from '../inputManager.js';
 import { getSign } from '../util.js';
 
 export class Movement {
-  constructor(parent, speed = 3, direction = 'bottom') {
-    this.parent = parent;
+  constructor(speed = 3, direction = 'bottom') {
     this.isMoving = false;
     this.speed = speed;
     this.direction = direction;
@@ -22,30 +21,32 @@ export class Movement {
   }
 
   setTarget(direction) {
-    const grid = GameManager.getInstance().getGrid();
+    const game = new GameManager();
+    const grid = game.getGrid();
+    const player = game.getPlayer();
     switch (direction) {
       case 'top':
         this.target = {
-          x: this.parent.location.x,
-          y: this.parent.location.y - grid.CELL_SIZE,
+          x: player.location.x,
+          y: player.location.y - grid.CELL_SIZE,
         };
         break;
       case 'bottom':
         this.target = {
-          x: this.parent.location.x,
-          y: this.parent.location.y + grid.CELL_SIZE,
+          x: player.location.x,
+          y: player.location.y + grid.CELL_SIZE,
         };
         break;
       case 'left':
         this.target = {
-          x: this.parent.location.x - grid.CELL_SIZE,
-          y: this.parent.location.y,
+          x: player.location.x - grid.CELL_SIZE,
+          y: player.location.y,
         };
         break;
       case 'right':
         this.target = {
-          x: this.parent.location.x + grid.CELL_SIZE,
-          y: this.parent.location.y,
+          x: player.location.x + grid.CELL_SIZE,
+          y: player.location.y,
         };
         break;
       default:
@@ -54,27 +55,29 @@ export class Movement {
   }
 
   checkIfTargetReached = () => {
+    const game = new GameManager();
+    const player = game.getPlayer();
     if (this.direction === 'top') {
-      if (this.parent.location.y <= this.target.y) {
-        this.parent.location.y = this.target.y;
+      if (player.location.y <= this.target.y) {
+        player.location.y = Math.floor(this.target.y);
         return true;
       }
     }
     if (this.direction === 'bottom') {
-      if (this.parent.location.y >= this.target.y) {
-        this.parent.location.y = this.target.y;
+      if (player.location.y >= this.target.y) {
+        player.location.y = Math.floor(this.target.y);
         return true;
       }
     }
     if (this.direction === 'left') {
-      if (this.parent.location.x <= this.target.x) {
-        this.parent.location.x = this.target.x;
+      if (player.location.x <= this.target.x) {
+        player.location.x = Math.floor(this.target.x);
         return true;
       }
     }
     if (this.direction === 'right') {
-      if (this.parent.location.x >= this.target.x) {
-        this.parent.location.x = this.target.x;
+      if (player.location.x >= this.target.x) {
+        player.location.x = Math.floor(this.target.x);
         return true;
       }
     }
@@ -82,12 +85,14 @@ export class Movement {
   };
 
   move = (delta) => {
-    const map = GameManager.getInstance().mapManager.currentMap;
-    const grid = GameManager.getInstance().getGrid();
-    const uiManager = GameManager.getInstance().getUIManager();
+    const game = new GameManager();
+    const map = game.mapManager.currentMap;
+    const grid = game.getGrid();
+    const uiManager = game.getUIManager();
+    const player = game.getPlayer();
 
     if (uiManager.isDialogOpen()) return;
-    if (this.parent.collides) {
+    if (player.collides) {
       if (this.target) {
         const targetCell = {
           x: Math.floor(this.target.x / grid.CELL_SIZE),
@@ -101,26 +106,26 @@ export class Movement {
         if (collidingObject) {
           console.log('COLLIDING WITH :', collidingObject);
           this.target = {
-            x: this.parent.location.x,
-            y: this.parent.location.y,
+            x: player.location.x,
+            y: player.location.y,
           };
           return;
         }
       }
     }
     if (this.isMoving) {
-      this.parent.location.x =
-        getSign(this.target.x - this.parent.location.x) * this.speed * grid.CELL_SIZE * this.speedBoost * delta +
-        this.parent.location.x;
-      this.parent.location.y =
-        getSign(this.target.y - this.parent.location.y) * this.speed * grid.CELL_SIZE * this.speedBoost * delta +
-        this.parent.location.y;
+      player.location.x =
+        getSign(this.target.x - player.location.x) * this.speed * grid.CELL_SIZE * this.speedBoost * delta +
+        player.location.x;
+      player.location.y =
+        getSign(this.target.y - player.location.y) * this.speed * grid.CELL_SIZE * this.speedBoost * delta +
+        player.location.y;
       const hasReached = this.checkIfTargetReached();
       if (hasReached) {
         // update parent coordinates:
-        this.parent.coordinates = {
-          x: Math.floor(this.parent.location.x / grid.CELL_SIZE),
-          y: Math.floor(this.parent.location.y / grid.CELL_SIZE),
+        player.coordinates = {
+          x: Math.floor(player.location.x / grid.CELL_SIZE),
+          y: Math.floor(player.location.y / grid.CELL_SIZE),
         };
       }
       return hasReached;
@@ -129,8 +134,8 @@ export class Movement {
   };
 
   static setNextTarget(player) {
-    if (GameManager.getInstance().getUIManager().isDialogOpen()) return;
-    if (GameManager.getInstance().getBattleManager().isBattling()) return;
+    // if (GameManager.getInstance().getUIManager().isDialogOpen()) return;
+    // if (GameManager.getInstance().getBattleManager().isBattling()) return;
     const grid = GameManager.getInstance().getGrid();
     if (keyManager['ArrowUp'] || keyManager['z']) {
       player.movement.direction = 'top';
@@ -159,5 +164,10 @@ export class Movement {
     } else {
       player.movement.target = undefined;
     }
+  }
+
+  stopMovement() {
+    this.target = undefined;
+    this.isMoving = false;
   }
 }

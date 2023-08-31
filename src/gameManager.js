@@ -4,7 +4,9 @@ import { AssetManager } from './class/assetManager.js';
 import { Entity } from './entities/entities.js';
 import { mapManager } from './map/mapManager.js';
 import { Player } from './player/player.js';
+import { preloadAssets } from './preload.js';
 import { UIManager } from './ui/UIManager.js';
+import { mergeDeep } from './util.js';
 
 // GAME MANAGER SINGLETON
 
@@ -20,6 +22,7 @@ export class GameManager {
       this.isPaused = false;
       this.currentScene = 'world';
       this.battleManager = new BattleManager();
+      this.camera = null;
     }
     return GameManager.instance;
   }
@@ -77,6 +80,7 @@ export class GameManager {
   }
 
   instantiateBattle(player, enemy, terrain) {
+    player.movement.stopMovement();
     this.battleManager.instantiateBattle(player, enemy, terrain);
     this.currentScene = 'battle';
   }
@@ -98,12 +102,48 @@ export class GameManager {
     });
     this.uiManager.update(delta);
     this.camera.update(delta);
+  }
 
-    // if (this.currentScene === 'battle') {
-    //   this.player.update(delta);
-    //   this.uiManager.update(delta);
-    //   // this.battleManager.update(delta);
-    // }
+  save() {
+    // FUNCTION THAT SERIALIZE THIS OBJECT AND DOWNLOADS IT AS A JSON FILE
+    const serialized = JSON.stringify({
+      player: this.player,
+      mapManager: this.mapManager,
+      currentScene: this.currentScene,
+    });
+    const blob = new Blob([serialized], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'save.json';
+    link.click();
+  }
+
+  clearData() {
+    this.currentScene = 'world';
+    this.uiManager.dialogBox = null;
+    this.battleManager.currentBattle = null;
+  }
+
+  load() {
+    const files = document.getElementById('selectFiles').files;
+    if (files.length <= 0) {
+      return false;
+    }
+    const mapInstanceData = async (e) => {
+      const result = JSON.parse(e.target.result);
+      this.clearData();
+      this.player = mergeDeep(this.player, result.player);
+      this.mapManager.currentMap = this.mapManager.maps[result.mapManager.currentMap.name];
+      this.mapManager.currentMapName = result.mapManager.currentMap.name;
+      console.log(this.instance);
+      await preloadAssets();
+    };
+    const fr = new FileReader();
+
+    fr.onload = mapInstanceData.bind(this);
+
+    fr.readAsText(files.item(0));
   }
 
   draw(ctx) {

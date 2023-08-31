@@ -13,7 +13,8 @@ export class UIManager {
 
   openDialog(type, text) {
     this.dialogBox = new DialogBox(type, text);
-    this.stopMovement = true;
+    const game = GameManager.getInstance();
+    game.player.movement.stopMovement();
   }
   closeDialog() {
     this.dialogBox = null;
@@ -30,6 +31,10 @@ export class UIManager {
     ctx.font = '20px Arial';
     const pointString = '.'.repeat(Math.floor((this.loadingTime * 2) % 4));
     ctx.fillText(`Loading${pointString}`, 20, 20);
+  }
+
+  drawMenu(ctx) {
+    //TO IMPLEMENT
   }
 
   updateLoadingScreen(delta) {

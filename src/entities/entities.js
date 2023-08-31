@@ -1,5 +1,7 @@
 import { GameManager } from '../gameManager.js';
 
+const ENCOUNTER_CHANCE = 12;
+
 export const ENTITIES = {
   tree: {
     width: 1,
@@ -51,14 +53,13 @@ export const ENTITIES = {
       return true;
     },
     onWalkOver: () => {
-      console.log('WALK ON WATER');
       //RANDOM 1/12 TO LOG 'POKEMON ENCOUNTERED'
-      const random = Math.floor(Math.random() * 12);
+      const random = Math.floor(Math.random() * ENCOUNTER_CHANCE);
       if (random === 0) {
-        console.log('POKEMON ENCOUNTERED');
         const game = new GameManager();
         const player = game.getPlayer();
-        game.instantiateBattle(player, 'pikachu', 'water');
+        game.instantiateBattle(player, 'Magicarpe', 'water');
+        console.log('NEW BATTLE AT COORDINATES : ', player.coordinates, 'AT ENTITY COORDINATES');
       }
     },
     interactingAction: (e) => {
@@ -67,8 +68,7 @@ export const ENTITIES = {
       if (!player.isSurfing) {
         player.isSurfing = true;
         game.getUIManager().openDialog('greetings', 'You are now surfing!');
-        game.player.movement.setTarget(game.player.movement.direction);
-        game.player.movement.isMoving = true;
+        game.player.movement.initiateMovement(game.player.movement.direction);
       }
     },
     onLeave: () => {
@@ -98,6 +98,28 @@ export const ENTITIES = {
     //   src: './assets/ground/ground.png',
     // },
   },
+  caveGround: {
+    width: 1,
+    name: 'caveground',
+    height: 1,
+    color: 'darkgrey',
+    collides: () => {
+      return false;
+    },
+    greetings: 'Hello, I am cave ground!',
+    asset: {
+      src: './assets/ground/ground.png',
+    },
+    onWalkOver: () => {
+      //RANDOM 1/12 TO LOG 'POKEMON ENCOUNTERED'
+      const random = Math.floor(Math.random() * ENCOUNTER_CHANCE);
+      if (random === 0) {
+        const game = new GameManager();
+        const player = game.getPlayer();
+        game.instantiateBattle(player, getEncounteredEnemy(game.getMap().encounters, 'ground'), 'cave');
+      }
+    },
+  },
   door: {
     width: 1,
     height: 1,
@@ -121,14 +143,12 @@ export const ENTITIES = {
     },
     greetings: 'Hello, I am grass!',
     onWalkOver: () => {
-      console.log('WALK ON GRASS');
       //RANDOM 1/12 TO LOG 'POKEMON ENCOUNTERED'
-      const random = Math.floor(Math.random() * 12);
+      const random = Math.floor(Math.random() * ENCOUNTER_CHANCE);
       if (random === 0) {
-        console.log('POKEMON ENCOUNTERED');
         const game = new GameManager();
         const player = game.getPlayer();
-        game.instantiateBattle(player, 'pikachu', 'default');
+        game.instantiateBattle(player, getEncounteredEnemy(game.getMap().encounters, 'grass'), 'default');
       }
     },
     asset: {
@@ -190,3 +210,18 @@ export class Entity {
   }
   static instances = [];
 }
+
+const getEncounteredEnemy = (encouterTable, zone) => {
+  // PICK A RANDOM POKEMON IN ENCOUTERTABLE BASED ON ENCOUTERTABLE[ZONE].chance [0-1]
+  const random = Math.random();
+  // console.log(encouterTable[zone]);
+  // MELANGE encounterTable[zone] pour avoir un tableau de pokemon dans un ordre aléatoire:
+  encouterTable[zone].sort(() => {
+    return Math.random() - 0.5;
+  });
+  // console.log(encouterTable[zone]);
+  const pokemon = encouterTable[zone].find((pokemon) => {
+    return random <= pokemon.chance;
+  });
+  return pokemon.name;
+};

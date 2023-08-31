@@ -38,7 +38,7 @@ export class Player {
       x: map.playerStart.x * grid.CELL_SIZE,
       y: map.playerStart.y * grid.CELL_SIZE,
     };
-    this.movement = new Movement(this, 3, 'bottom');
+    this.movement = new Movement(3, 'bottom');
   }
   update(delta) {
     const game = GameManager.getInstance();
@@ -49,9 +49,12 @@ export class Player {
   }
   move(delta) {
     const game = new GameManager();
-    if (game.uiManager.stopMovement) return;
+    if (game.battleManager.isBattling() || game.uiManager.isDialogOpen()) return;
+    // if (game.uiManager.stopMovement) return;
     const hasReached = this.movement.move(delta);
     if (hasReached) {
+      console.log(this.movement);
+      if (game.battleManager.isBattling() || game.uiManager.isDialogOpen()) return;
       Movement.setNextTarget(this);
       if (this.movement.target) {
         this.movement.move(delta);

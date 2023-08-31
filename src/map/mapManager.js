@@ -13,6 +13,7 @@ export class mapManager {
   }
 
   getNeededAssets = () => {
+    console.log('GETTING NEEDED ASSETS');
     //FOR EACH ENTITY IN THIS MAP GET ./assets/{entityName}.asset and store it in a [{ entityName: assetSrcStr }] object:
     const neededAssets = {};
     for (const entitie in this.currentMap.objectsLocation) {
@@ -23,8 +24,6 @@ export class mapManager {
 
     //FOR EACH TERRAIN IN THIS MAP GET ./assets/{terrainName}.asset and store it in a [{ terrainName: assetSrcStr }] object:
     this.currentMap.terrains.forEach((terrain) => {
-      console.log(this.currentMap);
-      console.log(terrain);
       neededAssets[terrain + 'Battle'] = { src: `./assets/battle/terrain/${terrain}.png` };
     });
     return neededAssets;
@@ -73,7 +72,6 @@ export class mapManager {
       return false;
     }
   }
-
   updateMap(delta) {
     //CHECK IF PLAYER IS IN A CHANGING MAP POINT :
     const game = GameManager.getInstance();

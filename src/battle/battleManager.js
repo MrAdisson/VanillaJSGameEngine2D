@@ -15,7 +15,6 @@ export class BattleManager {
     this.currentBattle = null;
     const game = new GameManager();
     game.setCurrentScene('world');
-    console.log('BATTLE ENDED');
     if (reason === 'runAway') {
       game.getUIManager().openDialog('greetings', 'You ran away from the battle!');
     }
