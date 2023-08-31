@@ -59,25 +59,25 @@ export class Movement {
     const player = game.getPlayer();
     if (this.direction === 'top') {
       if (player.location.y <= this.target.y) {
-        player.location.y = Math.floor(this.target.y);
+        player.location.y = this.target.y;
         return true;
       }
     }
     if (this.direction === 'bottom') {
       if (player.location.y >= this.target.y) {
-        player.location.y = Math.floor(this.target.y);
+        player.location.y = this.target.y;
         return true;
       }
     }
     if (this.direction === 'left') {
       if (player.location.x <= this.target.x) {
-        player.location.x = Math.floor(this.target.x);
+        player.location.x = this.target.x;
         return true;
       }
     }
     if (this.direction === 'right') {
       if (player.location.x >= this.target.x) {
-        player.location.x = Math.floor(this.target.x);
+        player.location.x = this.target.x;
         return true;
       }
     }
@@ -122,7 +122,6 @@ export class Movement {
         player.location.y;
       const hasReached = this.checkIfTargetReached();
       if (hasReached) {
-        // update parent coordinates:
         player.coordinates = {
           x: Math.floor(player.location.x / grid.CELL_SIZE),
           y: Math.floor(player.location.y / grid.CELL_SIZE),
@@ -163,6 +162,7 @@ export class Movement {
       };
     } else {
       player.movement.target = undefined;
+      player.movement.isMoving = false;
     }
   }
 

@@ -50,17 +50,9 @@ export class Player {
   move(delta) {
     const game = new GameManager();
     if (game.battleManager.isBattling() || game.uiManager.isDialogOpen()) return;
-    // if (game.uiManager.stopMovement) return;
     const hasReached = this.movement.move(delta);
     if (hasReached) {
-      console.log(this.movement);
-      if (game.battleManager.isBattling() || game.uiManager.isDialogOpen()) return;
       Movement.setNextTarget(this);
-      if (this.movement.target) {
-        this.movement.move(delta);
-      } else {
-        this.movement.isMoving = false;
-      }
     }
   }
 }
